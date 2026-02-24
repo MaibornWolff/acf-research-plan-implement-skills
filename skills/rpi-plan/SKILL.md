@@ -167,6 +167,10 @@ status: draft
 
 [A specification of the desired end state after this plan is complete, and how to verify it]
 
+### UI Mockups (if applicable)
+[If the changes involve user-facing interfaces (CLI output, web UI, terminal UI, etc.), include ASCII mockups
+that visually illustrate the intended result. This helps the reader quickly grasp the change.]
+
 ### Key Discoveries:
 - [Important finding with file:line reference]
 - [Pattern to follow]
@@ -288,13 +292,19 @@ status: draft
    - Include specific file paths and line numbers
    - Write measurable success criteria with clear automated vs manual distinction
 
-4. **Be Practical**:
+4. **Be Visual**:
+   - If the change involves any user-facing interface (web UI, CLI output, terminal UI, forms, dashboards, etc.), include ASCII mockups in the plan
+   - Mockups make the intended result immediately understandable and help catch misunderstandings early
+   - Show both the current state and the proposed state when the change modifies an existing UI
+   - Keep mockups simple but accurate enough to convey layout, key elements, and interactions
+
+5. **Be Practical**:
    - Focus on incremental, testable changes
    - Consider migration and rollback
    - Think about edge cases
    - Include "what we're NOT doing"
 
-5. **No Open Questions in Final Plan**:
+6. **No Open Questions in Final Plan**:
    - If you encounter open questions during planning, STOP
    - Research or ask for clarification immediately
    - Do NOT write the plan with unresolved questions
