@@ -40,26 +40,32 @@ Then wait for the user's research query.
    - If you have a todo list, use it to track progress
    - Consider which directories, files, or architectural patterns are relevant
 
-3. **Spawn parallel sub-agents to explore different aspects:**
-   - Create multiple Task agents to research different aspects concurrently
-   - Each sub-agent should focus on a specific area: locating files, analyzing code, finding patterns, etc.
-   - The key is to use these agents intelligently:
-     - Start with broad searches to find what exists
-     - Then use focused agents on the most promising findings to document how they work
+3. **Spawn parallel sub-agents to identify relevant files and map the landscape:**
+   - Create multiple Task agents to search for files and identify what's relevant
+   - Each sub-agent should focus on locating files and reporting back paths and brief summaries — NOT on deeply analyzing code
+   - The key is to use these agents for discovery:
+     - Search for files related to each research area
+     - Identify entry points, key types, and important functions
+     - Report back file paths, line numbers, and short descriptions of what each file contains
      - Run multiple agents in parallel when they're searching for different things
-     - Each agent prompt should be specific about WHAT to look for, not HOW to search
      - Remind agents they are documenting, not evaluating or improving
    - **If the user explicitly asks for web research**, spawn additional agents with WebSearch/WebFetch tools and instruct them to return links with their findings
 
-4. **Wait for all sub-agents to complete and synthesize findings:**
-   - IMPORTANT: Wait for ALL sub-agent tasks to complete before proceeding
-   - Compile all sub-agent results
+4. **Read the most relevant files yourself in the main context:**
+   - After sub-agents report back, identify the most important files for answering the research question
+   - **Read these files yourself using the Read tool** — you need them in your own context to write an accurate, detailed research document
+   - Do NOT rely solely on sub-agent summaries for the core findings — sub-agent summaries may miss nuances, connections, or important details
+   - Prioritize files that are central to the research question; skip peripheral files that sub-agents already summarized adequately
+   - This is the step where you build deep understanding — the previous step was just finding what to read
+
+5. **Synthesize findings into a complete picture:**
+   - Combine your own reading with sub-agent discoveries
    - Connect findings across different components
    - Include specific file paths and line numbers for reference
    - Highlight patterns, connections, and architectural decisions
    - Answer the user's specific questions with concrete evidence
 
-5. **Gather metadata for the research document:**
+6. **Gather metadata for the research document:**
    - Run `python <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
    - Determine the output filename: `docs/agents/research/YYYY-MM-DD-description.md`
      - YYYY-MM-DD is today's date
@@ -67,7 +73,7 @@ Then wait for the user's research query.
      - Example: `2025-01-08-authentication-flow.md`
      - The output folder (`docs/agents/research/`) can be overridden by instructions in the project's `AGENTS.md` or `CLAUDE.md`
 
-6. **Generate research document:**
+7. **Generate research document:**
    - Use the metadata gathered in step 5
    - Ensure the `docs/agents/research/` directory exists (create if needed)
    - Structure the document with YAML frontmatter followed by content:
@@ -110,32 +116,32 @@ Then wait for the user's research query.
      [Any areas that need further investigation]
      ```
 
-7. **Present findings to the user:**
+8. **Present findings to the user:**
    - Present a concise summary of findings
    - Include key file references for easy navigation
    - Ask if they have follow-up questions or need clarification
 
-8. **Handle follow-up questions:**
+9. **Handle follow-up questions:**
    - If the user has follow-up questions, append to the same research document
    - Add a new section: `## Follow-up Research [timestamp]`
    - Spawn new sub-agents as needed for additional investigation
    - Continue updating the document
 
 ## Important notes:
-- Always use parallel Task agents to maximize efficiency and minimize context usage
-- Always run fresh codebase research - never rely solely on existing research documents
+- Use parallel sub-agents for file discovery and landscape mapping, but **read the most important files yourself** in the main context
+- Sub-agents are scouts that find relevant files — the main agent must read key files to build deep understanding
+- Do NOT rely solely on sub-agent summaries for your core findings; they may miss nuances and connections
 - Focus on finding concrete file paths and line numbers for developer reference
 - Research documents should be self-contained with all necessary context
-- Each sub-agent prompt should be specific and focused on read-only documentation operations
+- Each sub-agent prompt should be specific and focused on locating files and reporting back paths
 - Document cross-component connections and how systems interact
-- Keep the main agent focused on synthesis, not deep file reading
-- Have sub-agents document examples and usage patterns as they exist
 - **CRITICAL**: You and all sub-agents are documentarians, not evaluators
 - **REMEMBER**: Document what IS, not what SHOULD BE
 - **NO RECOMMENDATIONS**: Only describe the current state of the codebase
 - **File reading**: Always read mentioned files FULLY (no limit/offset) before spawning sub-tasks
 - **Critical ordering**: Follow the numbered steps exactly
   - ALWAYS read mentioned files first before spawning sub-tasks (step 1)
-  - ALWAYS wait for all sub-agents to complete before synthesizing (step 4)
-  - ALWAYS gather metadata before writing the document (step 5 before step 6)
+  - ALWAYS read key files yourself after sub-agents report back (step 4)
+  - ALWAYS wait for your own reading to complete before synthesizing (step 5)
+  - ALWAYS gather metadata before writing the document (step 6 before step 7)
   - NEVER write the research document with placeholder values

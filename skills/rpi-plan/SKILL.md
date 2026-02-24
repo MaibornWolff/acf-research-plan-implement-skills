@@ -35,21 +35,18 @@ Then wait for the user's input.
 
 2. **Determine if research already exists**:
    - If the user provided a research document (e.g. from `docs/agents/research/`), **trust it as the source of truth**. Do NOT re-research topics that the document already covers. Use its findings, file references, and architecture analysis directly as the basis for planning.
-   - Only spawn sub-agents for aspects that the research document does NOT cover (e.g. specific implementation patterns, test conventions, or areas the user wants to go deeper on).
-   - If NO research document was provided, proceed with full research as described below.
+   - **NEVER repeat or re-do research that has already been provided.** The plan phase is about turning existing research into actionable implementation steps, not about gathering information that's already available.
+   - If NO research document was provided, proceed with targeted research as described below.
 
-3. **Spawn parallel sub-agents to gather context** (skip if research covers this):
-   Before asking the user any questions, spawn sub-agents to research different aspects concurrently:
-   - Find all files related to the task
-   - Understand how the current implementation works
-   - Trace data flows and identify key functions
-   - Find relevant tests and examples
-   - Each sub-agent should return detailed findings with file:line references
+3. **Read the most relevant files directly into your main context**:
+   - Based on the research document and/or user input, identify the most relevant source files
+   - **Read these files yourself using the Read tool** — do NOT delegate this to sub-agents. You need these files in your own context to write an accurate plan.
+   - Focus on files that will be modified or that define interfaces/patterns you need to follow
 
-4. **Read all files identified by sub-agents**:
-   - After sub-agents complete, read ALL files they identified as relevant
-   - Read them FULLY into the main context
-   - This ensures you have complete understanding before proceeding
+4. **Only spawn sub-agents for genuinely missing information**:
+   - Do NOT spawn sub-agents to re-discover what the research document already covers
+   - Only use sub-agents if there are specific gaps: e.g. the research doesn't cover test conventions, a specific API surface, or a file that was added after the research was written
+   - Each sub-agent should have a narrow, specific question to answer — not broad exploration
 
 5. **Analyze and verify understanding**:
    - Cross-reference the requirements with actual code (and research document if provided)
@@ -74,23 +71,21 @@ Then wait for the user's input.
 
    Only ask questions that you genuinely cannot answer through code investigation.
 
-### Step 2: Research & Discovery
+### Step 2: Targeted Research & Discovery
 
 After getting initial clarifications:
 
 1. **If the user corrects any misunderstanding**:
    - DO NOT just accept the correction
-   - Spawn new sub-agents to verify the correct information
-   - Read the specific files/directories they mention
+   - Read the specific files/directories they mention directly into your context
    - Only proceed once you've verified the facts yourself
 
 2. If you have a todo list, use it to track exploration progress
 
-3. **Spawn parallel sub-agents for comprehensive research**:
-   - Create multiple agents to research different aspects concurrently
-   - Focus each agent on a specific area: finding files, analyzing code, identifying patterns, locating tests
-   - Run multiple agents in parallel when they're searching for different things
-   - Wait for ALL sub-agents to complete before proceeding
+3. **Fill in gaps — do NOT redo existing research**:
+   - If a research document was provided, identify only the specific gaps that need filling
+   - Read additional files directly when possible — only spawn sub-agents for searches where you don't know the file paths
+   - **Ask yourself before any research action: "Is this already covered by the provided research?"** If yes, skip it and use what's there.
 
 4. **Present findings and design options**:
    ```
@@ -285,9 +280,11 @@ status: draft
    - Allow course corrections
    - Work collaboratively
 
-3. **Be Thorough**:
+3. **Be Thorough But Not Redundant**:
    - Read all context files COMPLETELY before planning
-   - Research actual code patterns using parallel sub-agents
+   - Use provided research as-is — do not re-investigate what's already documented
+   - Read key source files directly into your context rather than delegating to sub-agents
+   - Only spawn sub-agents for narrow, specific questions that aren't answered by existing research
    - Include specific file paths and line numbers
    - Write measurable success criteria with clear automated vs manual distinction
 
