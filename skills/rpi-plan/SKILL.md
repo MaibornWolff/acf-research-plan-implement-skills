@@ -142,6 +142,7 @@ After structure approval:
      - YYYY-MM-DD is today's date
      - description is a brief kebab-case description
      - Example: `2025-01-08-improve-error-handling.md`
+     - The output folder (`docs/agents/plans/`) can be overridden by instructions in the project's `AGENTS.md` or `CLAUDE.md`
 
 2. **Write the plan** to `docs/agents/plans/YYYY-MM-DD-description.md`
    - Ensure the `docs/agents/plans/` directory exists (create if needed)

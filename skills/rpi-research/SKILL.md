@@ -65,6 +65,7 @@ Then wait for the user's research query.
      - YYYY-MM-DD is today's date
      - description is a brief kebab-case description of the research topic
      - Example: `2025-01-08-authentication-flow.md`
+     - The output folder (`docs/agents/research/`) can be overridden by instructions in the project's `AGENTS.md` or `CLAUDE.md`
 
 6. **Generate research document:**
    - Use the metadata gathered in step 5
