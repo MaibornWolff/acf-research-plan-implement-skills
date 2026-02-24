@@ -141,6 +141,7 @@ After structure approval:
 
 2. **Write the plan** to `docs/agents/plans/YYYY-MM-DD-description.md`
    - Ensure the `docs/agents/plans/` directory exists (create if needed)
+   - **Every actionable item must have a checkbox** (`- [ ]`) so progress can be tracked during implementation. This includes each change in "Changes Required" and each verification step in "Success Criteria".
    - Use the template structure below:
 
 ````markdown
@@ -191,7 +192,7 @@ that visually illustrate the intended result. This helps the reader quickly gras
 
 ### Changes Required:
 
-#### 1. [Component/File Group]
+#### [ ] 1. [Component/File Group]
 **File**: `path/to/file.ext`
 **Changes**: [Summary of changes]
 
