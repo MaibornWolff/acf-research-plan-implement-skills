@@ -46,20 +46,20 @@ If you encounter a mismatch:
 After implementing a phase:
 - Run the success criteria checks listed in the plan (test commands, linters, type checkers, etc.)
 - Fix any issues before proceeding
-- **Pause for human verification**: After completing all automated verification for a phase, pause and inform the human that the phase is ready for manual testing. Use this format:
-  ```
-  Phase [N] Complete - Ready for Manual Verification
+- **Check if manual verification is needed**: Look at the plan's success criteria for the current phase.
+  - If the phase has **manual verification steps**, pause and inform the human:
+    ```
+    Phase [N] Complete - Ready for Manual Verification
 
-  Automated verification passed:
-  - [List automated checks that passed]
+    Automated verification passed:
+    - [List automated checks that passed]
 
-  Please perform the manual verification steps listed in the plan:
-  - [List manual verification items from the plan]
+    Please perform the manual verification steps listed in the plan:
+    - [List manual verification items from the plan]
 
-  Let me know when manual testing is complete so I can proceed to Phase [N+1].
-  ```
-
-If instructed to execute multiple phases consecutively, skip the pause until the last phase. Otherwise, assume you are just doing one phase.
+    Let me know when manual testing is complete so I can proceed to Phase [N+1].
+    ```
+  - If the phase has **only automated verification** (no manual steps), continue directly to the next phase without pausing. Just note in passing that the phase is complete and automated checks passed.
 
 Do not check off items in the manual testing steps until confirmed by the user.
 
