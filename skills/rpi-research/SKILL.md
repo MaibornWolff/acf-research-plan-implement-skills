@@ -1,7 +1,6 @@
 ---
 name: rpi-research
 description: Conduct deep codebase research and produce a written report. Use when the user explicitly requests research like "start a research for", "deeply investigate", or "fully understand how X works". Do not use for quick questions or simple code lookups.
-model: opus
 ---
 
 # Research Codebase

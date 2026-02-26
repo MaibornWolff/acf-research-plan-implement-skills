@@ -1,7 +1,6 @@
 ---
 name: rpi-plan
 description: Create detailed, phased implementation plans through interactive research and iteration. Use when the user explicitly asks to "create a plan", "plan the implementation", or "design an approach" for a feature, refactor, or bug fix. Do not use for quick questions or simple tasks.
-model: opus
 ---
 
 # Implementation Plan

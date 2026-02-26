@@ -2,6 +2,30 @@
 
 A set of agent skills that provide a structured workflow for codebase research, implementation planning, and plan execution.
 
+## Workflow
+
+The three skills form a sequential pipeline. Each step produces an artifact that feeds into the next:
+
+```
+                  research report                   approved plan
+                  (docs/agents/                     (docs/agents/
+                   research/)                         plans/)
+                       │                                │
+  User Request         │                                │
+       │               │                                │
+       ▼               ▼                                ▼
+┌──────────────┐  ┌──────────────┐              ┌──────────────┐
+│ rpi-research │─▶│   rpi-plan   │─────────────▶│rpi-implement │─▶ Working Code
+└──────────────┘  └──────────────┘              └──────────────┘
+   (optional)        Creates a phased              Executes the plan
+  Investigates        implementation plan,          phase by phase with
+  the codebase,       iterates with                 automated and manual
+  produces a          the user                      verification
+  written report
+```
+
+You can run all three steps end-to-end for a large feature, or start at any stage. Research can be skipped for simple codebases or straightforward features where the agent can plan directly without prior investigation.
+
 ## Skills
 
 ### rpi-research
