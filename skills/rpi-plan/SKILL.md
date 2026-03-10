@@ -224,13 +224,14 @@ that visually illustrate the intended result. This helps the reader quickly gras
 ## Testing Strategy
 
 ### Unit Tests:
-- [What to test]
+- [What to test. List concrete test cases that cover all the requirements.]
 - [Key edge cases]
 
 ### Integration Tests:
-- [End-to-end scenarios]
+- [End-to-end test scenarios]
 
 ### Manual Testing Steps:
+*Only include steps the user can test by interacting with the app naturally.*
 1. [Specific step to verify feature]
 2. [Another verification step]
 

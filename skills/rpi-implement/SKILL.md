@@ -19,13 +19,20 @@ When you have a plan:
 - If you have a todo list, use it to track your progress
 - Start implementing if you understand what needs to be done
 
+## Task Tracking
+
+The plan file is also a state tracker. After every task, you MUST immediately update the checkbox. Also mark tasks you are working on:
+
+- `[ ]` - Not started yet
+- `[-]` - In Progress (update BEFORE you start)
+- `[x]` - Done (directly AFTER the task is tested successfully). For manual verification steps, only mark `[x]` after user confirmation.
+
 ## Implementation Philosophy
 
 Plans are carefully designed, but reality can be messy. Your job is to:
 - Follow the plan's intent while adapting to what you find
 - Implement each phase fully before moving to the next
 - Verify your work makes sense in the broader codebase context
-- Keep plan checkboxes current: `[-]` before starting an item, `[x]` right after it passes verification. Never batch updates.
 
 When things don't match the plan exactly, think about why and communicate clearly. The plan is your guide, but your judgment matters too.
 
