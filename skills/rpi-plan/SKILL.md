@@ -196,7 +196,8 @@ that visually illustrate the intended result. This helps the reader quickly gras
 **Changes**: [Summary of changes]
 
 ```[language]
-// Specific code to add/modify
+// High level code to add/modify
+// Focus on signatures, types, and structure
 ```
 
 ### Success Criteria:
@@ -296,6 +297,7 @@ that visually illustrate the intended result. This helps the reader quickly gras
 4. **Be Visual**:
    - If the change involves any user-facing interface (web UI, CLI output, terminal UI, forms, dashboards, etc.), include ASCII mockups in the plan
    - Mockups make the intended result immediately understandable and help catch misunderstandings early
+   - Study the current UI before creating mockups
    - Show both the current state and the proposed state when the change modifies an existing UI
    - Keep mockups simple but accurate enough to convey layout, key elements, and interactions
 
