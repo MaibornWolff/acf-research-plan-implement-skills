@@ -65,7 +65,7 @@ Then wait for the user's research query.
    - Answer the user's specific questions with concrete evidence
 
 6. **Gather metadata for the research document:**
-   - Run `python <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
+   - Run `python3 <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
    - Determine the output filename: `docs/agents/research/YYYY-MM-DD-description.md`
      - YYYY-MM-DD is today's date
      - description is a brief kebab-case description of the research topic

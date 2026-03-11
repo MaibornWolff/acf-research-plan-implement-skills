@@ -131,7 +131,7 @@ Once aligned on approach:
 After structure approval:
 
 1. **Gather metadata**:
-   - Run `python <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
+   - Run `python3 <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
    - Determine the output filename: `docs/agents/plans/YYYY-MM-DD-description.md`
      - YYYY-MM-DD is today's date
      - description is a brief kebab-case description
