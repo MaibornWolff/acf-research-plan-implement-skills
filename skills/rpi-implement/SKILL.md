@@ -67,6 +67,7 @@ After implementing a phase:
     Let me know when manual testing is complete so I can proceed to Phase [N+1].
     ```
   - If the phase has **only automated verification** (no manual steps), continue directly to the next phase without pausing. Just note in passing that the phase is complete and automated checks passed.
+  - You MUST NOT stop for manual verification if the phase has no real, user-facing feature to test. If a plan incorrectly lists manual steps for an internal-only phase (refactoring, utilities, types), skip the manual pause and continue.
 
 Do not check off items in the manual testing steps until confirmed by the user.
 

@@ -207,12 +207,12 @@ that visually illustrate the intended result. This helps the reader quickly gras
 - [ ] Type checking passes: `[typecheck command]`
 - [ ] Linting passes: `[lint command]`
 
-#### Manual Verification:
+#### Manual Verification (only if the phase produces a testable, user-facing feature):
 - [ ] Feature works as expected when tested
 - [ ] Edge case handling verified
 - [ ] No regressions in related features
 
-**Implementation Note**: After completing this phase and all automated verification passes, pause here for manual confirmation from the human before proceeding to the next phase.
+**Implementation Note**: Only pause for manual confirmation if this phase has manual verification steps. If the phase has only automated verification, continue to the next phase without stopping.
 
 ---
 
@@ -233,6 +233,7 @@ that visually illustrate the intended result. This helps the reader quickly gras
 
 ### Manual Testing Steps:
 *Only include steps the user can test by interacting with the app naturally.*
+*You MUST NOT include "review the code" or similar non-interactive steps here.*
 1. [Specific step to verify feature]
 2. [Another verification step]
 
@@ -324,10 +325,11 @@ that visually illustrate the intended result. This helps the reader quickly gras
    - Code compilation/type checking
 
 2. **Manual Verification** (requires human testing):
-   - UI/UX functionality
-   - Performance under real conditions
-   - Edge cases that are hard to automate
-   - User acceptance criteria
+   - You MUST only add manual verification when the user can interact with a working feature (e.g. open a UI, run a command, trigger a workflow).
+   - You MUST NOT use "review the code" or "check the implementation" as a verification step.
+   - You MUST NOT add manual verification to internal phases (refactoring, utilities, types, backend without entry point). Use automated verification instead.
+   - You SHOULD place manual verification at milestones where a user-facing feature is complete.
+   - Examples: UI/UX functionality, performance under real conditions, edge cases that are hard to automate, user acceptance criteria.
 
 ## Common Patterns
 
