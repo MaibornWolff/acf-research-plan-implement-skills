@@ -184,6 +184,12 @@ that visually illustrate the intended result. This helps the reader quickly gras
 
 [High-level strategy and reasoning]
 
+## Architecture and Code Reuse
+
+[Explicitly list the code & utils we can reuse or should extract. Refactorings are fine if they are related to the task and improve the code regarding DRY and reuse. Also make sure to research & mention all relevant third party libs and APIs you plan to use. Use ascii diagrams to visualize architecture decisions if appropriate.]
+
+[High level file tree showing the affected files with comments on how they will change]
+
 ## Phase 1: [Descriptive Name]
 
 ### Overview
