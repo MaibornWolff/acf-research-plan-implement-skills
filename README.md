@@ -7,19 +7,19 @@ A set of agent skills that provide a structured workflow for codebase research, 
 Install the skills using the `skills` CLI with the repository's SSH URL:
 
 ```bash
-npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git
+npx skills add git@github.com:MaibornWolff/acf-research-plan-implement-skills.git
 ```
 
 To install globally (available across all projects):
 
 ```bash
-npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git -g
+npx skills add git@github.com:MaibornWolff/acf-research-plan-implement-skills.git -g
 ```
 
 To install specific skills only:
 
 ```bash
-npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git --skill rpi-research
+npx skills add git@github.com:MaibornWolff/acf-research-plan-implement-skills.git --skill rpi-research
 ```
 
 ## Workflow
