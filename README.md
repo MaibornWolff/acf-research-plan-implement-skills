@@ -2,6 +2,26 @@
 
 A set of agent skills that provide a structured workflow for codebase research, implementation planning, and plan execution.
 
+## Installation
+
+Install the skills using the `skills` CLI with the repository's SSH URL:
+
+```bash
+npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git
+```
+
+To install globally (available across all projects):
+
+```bash
+npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git -g
+```
+
+To install specific skills only:
+
+```bash
+npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git --skill rpi-research
+```
+
 ## Workflow
 
 The three skills form a sequential pipeline. Each step produces an artifact that feeds into the next:
@@ -50,23 +70,3 @@ Execute approved implementation plans phase by phase with automated and manual v
 The skills also activate automatically based on trigger phrases like "deeply investigate", "create a plan", or "implement the plan".
 
 Output locations can be overridden via instructions in your `AGENTS.md` or `CLAUDE.md`.
-
-## Installation
-
-Install the skills using the `skills` CLI with the repository's SSH URL:
-
-```bash
-npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git
-```
-
-To install globally (available across all projects):
-
-```bash
-npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git -g
-```
-
-To install specific skills only:
-
-```bash
-npx skills add git@gitlab.maibornwolff.de:agentic-coding-school/research-plan-implement-skills.git --skill rpi-research
-```
