@@ -33,6 +33,7 @@ Then wait for the user's research query.
    - This ensures you have full context before decomposing the research
 
 2. **Analyze and decompose the research question:**
+   - **IMPORTANT**: Your task is to _research_ not plan. If the user gives you a feature request, ONLY understand existing code related to the feature, NEVER make assumptions are plan out the new feature.
    - Break down the user's query into composable research areas
    - Take time to think deeply about the underlying patterns, connections, and architectural implications the user might be seeking
    - Identify specific components, patterns, or concepts to investigate
@@ -41,21 +42,30 @@ Then wait for the user's research query.
 
 3. **Spawn parallel sub-agents to identify relevant files and map the landscape:**
    - Create multiple Task agents to search for files and identify what's relevant
-   - Each sub-agent should focus on locating files and reporting back paths and brief summaries — NOT on deeply analyzing code
+     - If you don't have access to subagents, do the research in your main context
+   - Each sub-agent should focus on locating files and reporting back paths and brief summaries - NOT on deeply analyzing code
    - The key is to use these agents for discovery:
      - Search for files related to each research area
      - Identify entry points, key types, and important functions
      - Report back file paths, line numbers, and short descriptions of what each file contains
      - Run multiple agents in parallel when they're searching for different things
      - Remind agents they are documenting, not evaluating or improving
-   - **If the user explicitly asks for web research**, spawn additional agents with WebSearch/WebFetch tools and instruct them to return links with their findings
+   - **If the user explicitly asks for web research**
+     - Spawn agents with WebSearch/WebFetch tools or skills (depending what is available)
+     - Each agent should focus on one research question
+     - The agent should fully answer that question and provide sources for every statement
+     - IMPORTANT: If the websearch tool or skill, already acts like a subagent and directly provides the answer, DO NOT spawn subagents, instead use the tool directly
+   - **If you find an existing research regarding the same or a similar topic**
+     - Check the commit hash and timestamp in the document header, you MUST make sure the document is still up-to-date by spawning a subagent with the task to check all changes since the document creation
+     - Read the document and understand it if still up to date
+     - Decide for yourself if you should update the existing document in the following steps or create a new one instead
 
 4. **Read the most relevant files yourself in the main context:**
    - After sub-agents report back, identify the most important files for answering the research question
-   - **Read these files yourself using the Read tool** — you need them in your own context to write an accurate, detailed research document
-   - Do NOT rely solely on sub-agent summaries for the core findings — sub-agent summaries may miss nuances, connections, or important details
+   - **Read these files yourself using the Read tool** - you need them in your own context to write an accurate, detailed research document
+   - Do NOT rely solely on sub-agent summaries for the core findings - sub-agent summaries may miss nuances, connections, or important details
    - Prioritize files that are central to the research question; skip peripheral files that sub-agents already summarized adequately
-   - This is the step where you build deep understanding — the previous step was just finding what to read
+   - This is the step where you build deep understanding - the previous step was just finding what to read
 
 5. **Synthesize findings into a complete picture:**
    - Combine your own reading with sub-agent discoveries
@@ -67,7 +77,6 @@ Then wait for the user's research query.
 6. **Gather metadata for the research document:**
    - Run `python3 <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
    - Determine the output filename: `docs/agents/research/YYYY-MM-DD-description.md`
-     - YYYY-MM-DD is today's date
      - description is a brief kebab-case description of the research topic
      - Example: `2025-01-08-authentication-flow.md`
      - The output folder (`docs/agents/research/`) can be overridden by instructions in the project's `AGENTS.md` or `CLAUDE.md`
@@ -93,6 +102,10 @@ Then wait for the user's research query.
 
      ## Summary
      [High-level documentation of what was found, answering the user's question by describing what exists]
+
+     [Render a file tree, giving an overview of the key files]
+
+     [Include ASCII diagrams if helps the reader to understand the discovered concepts]
 
      ## Detailed Findings
 
@@ -123,17 +136,16 @@ Then wait for the user's research query.
 9. **Handle follow-up questions:**
    - If the user has follow-up questions, append to the same research document
    - Add a new section: `## Follow-up Research [timestamp]`
-   - Spawn new sub-agents as needed for additional investigation
+   - If already have the full context directly answer that question, otherwise spawn new sub-agents as needed for additional investigation.
    - Continue updating the document
 
 ## Important notes:
 - Use parallel sub-agents for file discovery and landscape mapping, but **read the most important files yourself** in the main context
-- Sub-agents are scouts that find relevant files — the main agent must read key files to build deep understanding
-- Do NOT rely solely on sub-agent summaries for your core findings; they may miss nuances and connections
+- Each sub-agent prompt should be specific and focused on locating files and reporting back paths
 - Focus on finding concrete file paths and line numbers for developer reference
 - Research documents should be self-contained with all necessary context
-- Each sub-agent prompt should be specific and focused on locating files and reporting back paths
 - Document cross-component connections and how systems interact
+- If the user gives you a web research task, ONLY read files if relevant for the task. Adapt the document structure dynamically to fit the request.
 - **CRITICAL**: You and all sub-agents are documentarians, not evaluators
 - **REMEMBER**: Document what IS, not what SHOULD BE
 - **NO RECOMMENDATIONS**: Only describe the current state of the codebase

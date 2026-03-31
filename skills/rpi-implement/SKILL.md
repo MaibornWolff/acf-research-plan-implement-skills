@@ -9,15 +9,15 @@ You are tasked with implementing an approved technical plan. These plans contain
 
 ## Getting Started
 
-If the user provided a plan path, proceed directly. If no plan path was provided, check `docs/agents/plans/` for recent plans. If none found, ask the user for a path.
+If the user provided a plan path, proceed directly. If no plan path was provided, check `docs/agents/plans/` for the most recent plans. If none found, ask the user for a path.
 
 When you have a plan:
 - Read the plan completely and check for any existing checkmarks (`- [x]`)
 - Read all files mentioned in the plan
 - **Read files fully** - never use limit/offset parameters, you need complete context
 - Think deeply about how the pieces fit together
-- If you have a todo list, use it to track your progress
 - Start implementing if you understand what needs to be done
+- Mark tasks you are working on with `[-]` and completed tasks with `[x]` (Prefer that over the task list tool)
 
 ## Task Tracking
 
@@ -53,23 +53,11 @@ If you encounter a mismatch:
 After implementing a phase:
 - Run the success criteria checks listed in the plan (test commands, linters, type checkers, etc.)
 - Fix any issues before proceeding
-- **Check if manual verification is needed**: Look at the plan's success criteria for the current phase.
-  - If the phase has **manual verification steps**, pause and inform the human:
-    ```
-    Phase [N] Complete - Ready for Manual Verification
-
-    Automated verification passed:
-    - [List automated checks that passed]
-
-    Please perform the manual verification steps listed in the plan:
-    - [List manual verification items from the plan]
-
-    Let me know when manual testing is complete so I can proceed to Phase [N+1].
-    ```
-  - If the phase has **only automated verification** (no manual steps), continue directly to the next phase without pausing. Just note in passing that the phase is complete and automated checks passed.
-  - You MUST NOT stop for manual verification if the phase has no real, user-facing feature to test. If a plan incorrectly lists manual steps for an internal-only phase (refactoring, utilities, types), skip the manual pause and continue.
+- Proceed with the next phase (if not explicitly prompted otherwise)
 
 Do not check off items in the manual testing steps until confirmed by the user.
+
+After all phases are fully done, present the manual testing steps to the user for verification.
 
 ## If You Get Stuck
 
