@@ -35,17 +35,26 @@ Then wait for the user's input.
 2. **Determine if research already exists**:
    - If the user provided a research document (e.g. from `docs/agents/research/`), **trust it as the source of truth**. Do NOT re-research topics that the document already covers. Use its findings, file references, and architecture analysis directly as the basis for planning.
    - **NEVER repeat or re-do research that has already been provided.** The plan phase is about turning existing research into actionable implementation steps, not about gathering information that's already available.
-   - If NO research document was provided, proceed with targeted research as described below.
+   - If NO research document was provided, spawn a subagent to find relevant research documents:
+     - The subagent first should quickly scan the research folder by filename & yaml frontmatter to find relevant documents
+     - Then check if the research is relevant for our plan
+     - IF an document is relevant, verify that the research document is up-to-date by checking all changes since it's creation
+     - IF the document is outdated, the subagent should make sure to fully understand the latest information and update the document
 
-3. **Read the most relevant files directly into your main context**:
-   - Based on the research document and/or user input, identify the most relevant source files
+3. **Spawn sub-agents for missing information**:
+   - Do NOT spawn sub-agents to re-discover what the research document already covers
+   - Spawn explorer subagents to find additional, relevant files for task
+   - The job of the subagent it to explore and return paths to relevant files line numbers, NOT to provide long answers
+   - Each sub-agent should have a narrow, specific question to answer — not broad exploration
+   - You MUST fully understand third party interfaces you are going to use:
+     - IF you have access to the source code (e.g. node_modules), start a subagent to explore the relevant parts
+     - OTHERWISE start a websearch, either as a subagent or directly if your websearch tool already behaves like a subagent
+   - You MUST find and identify all related documentation to that feature and plan how to udpate it
+
+4. **Read the most relevant files directly into your main context**:
+   - Based on the research, user input and/or subagent results, identify the most relevant source files for the given tasks
    - **Read these files yourself using the Read tool** — do NOT delegate this to sub-agents. You need these files in your own context to write an accurate plan.
    - Focus on files that will be modified or that define interfaces/patterns you need to follow
-
-4. **Only spawn sub-agents for genuinely missing information**:
-   - Do NOT spawn sub-agents to re-discover what the research document already covers
-   - Only use sub-agents if there are specific gaps: e.g. the research doesn't cover test conventions, a specific API surface, or a file that was added after the research was written
-   - Each sub-agent should have a narrow, specific question to answer — not broad exploration
 
 5. **Analyze and verify understanding**:
    - Cross-reference the requirements with actual code (and research document if provided)
@@ -63,12 +72,18 @@ Then wait for the user's input.
    - [Potential complexity or edge case identified]
 
    Questions that my research couldn't answer:
-   - [Specific technical question that requires human judgment]
-   - [Business logic clarification]
-   - [Design preference that affects implementation]
+   1. [Specific technical question that requires human judgment]
+      _Recommended_: [assumed/recommended answer]
+   2. [Business logic clarification]
+      _Recommended_: [assumed/recommended answer]
+   3. [Design preference that affects implementation]
+      _Recommended_: [assumed/recommended answer]
+   ... [Above are just examples. Ask as many questions as needed]
    ```
 
    Only ask questions that you genuinely cannot answer through code investigation.
+
+   Work with ASCII mockups for UI/Design related questions to give the user a visual understanding.
 
 ### Step 2: Targeted Research & Discovery
 
@@ -99,8 +114,10 @@ After getting initial clarifications:
    2. [Option B] - [pros/cons]
 
    **Open Questions:**
-   - [Technical uncertainty]
-   - [Design decision needed]
+   1. [Technical uncertainty]
+      _Recommended_: [assumed/recommended answer]
+   2. [Design decision needed]
+      _Recommended_: [assumed/recommended answer]
 
    Which approach aligns best with your vision?
    ```
@@ -141,6 +158,9 @@ After structure approval:
 2. **Write the plan** to `docs/agents/plans/YYYY-MM-DD-description.md`
    - Ensure the `docs/agents/plans/` directory exists (create if needed)
    - **Every actionable item must have a checkbox** (`- [ ]`) so progress can be tracked during implementation. This includes each change in "Changes Required" and each verification step in "Success Criteria".
+   - Split the plan into phases:
+     - Keep phases very coarse. It is okay to only have a single phase for small features.
+     - Split phases if they are not or only loosely related or can be implemented in parallel
    - Use the template structure below:
 
 ````markdown
@@ -165,83 +185,26 @@ status: draft
 
 ## Desired End State
 
-[A specification of the desired end state after this plan is complete, and how to verify it]
-
-### UI Mockups (if applicable)
-[If the changes involve user-facing interfaces (CLI output, web UI, terminal UI, etc.), include ASCII mockups
-that visually illustrate the intended result. This helps the reader quickly grasp the change.]
-
-### Key Discoveries:
-- [Important finding with file:line reference]
-- [Pattern to follow]
-- [Constraint to work within]
+[A short specification of the desired end state after this plan is complete]
 
 ## What We're NOT Doing
 
 [Explicitly list out-of-scope items to prevent scope creep]
 
-## Implementation Approach
-
-[High-level strategy and reasoning]
+## UI Mockups (if applicable)
+[If the changes involve user-facing interfaces (CLI output, web UI, terminal UI, etc.), include ASCII mockups
+that visually illustrate the intended result. This helps the reader quickly grasp the change.]
 
 ## Architecture and Code Reuse
 
 [Explicitly list the code & utils we can reuse or should extract. Refactorings are fine if they are related to the task and improve the code regarding DRY and reuse. Also make sure to research & mention all relevant third party libs and APIs you plan to use. Use ascii diagrams to visualize architecture decisions if appropriate.]
 
-[High level file tree showing the affected files with comments on how they will change]
-
-## Phase 1: [Descriptive Name]
-
-### Overview
-[What this phase accomplishes]
-
-### Changes Required:
-
-#### [ ] 1. [Component/File Group]
-**File**: `path/to/file.ext`
-**Changes**: [Summary of changes]
-
-```[language]
-// High level code to add/modify
-// Focus on signatures, types, and structure
-```
-
-### Success Criteria:
-
-#### Automated Verification:
-- [ ] Tests pass: `[test command]`
-- [ ] Type checking passes: `[typecheck command]`
-- [ ] Linting passes: `[lint command]`
-
-#### Manual Verification (only if the phase produces a testable, user-facing feature):
-- [ ] Feature works as expected when tested
-- [ ] Edge case handling verified
-- [ ] No regressions in related features
-
-**Implementation Note**: Only pause for manual confirmation if this phase has manual verification steps. If the phase has only automated verification, continue to the next phase without stopping.
-
----
-
-## Phase 2: [Descriptive Name]
-
-[Similar structure with both automated and manual success criteria...]
-
----
-
-## Testing Strategy
-
-### Unit Tests:
-- [What to test. List concrete test cases that cover all the requirements.]
-- [Key edge cases]
-
-### Integration Tests:
-- [End-to-end test scenarios]
-
-### Manual Testing Steps:
-*Only include steps the user can test by interacting with the app naturally.*
-*You MUST NOT include "review the code" or similar non-interactive steps here.*
-1. [Specific step to verify feature]
-2. [Another verification step]
+[High level file tree showing the affected files and signatures]
+- `folder`
+  - `file1` - [consise change summary]
+    - `AffectedClass` - [few word summar]
+    - [...]
+  - `file2` - [...]
 
 ## Performance Considerations
 
@@ -251,6 +214,37 @@ that visually illustrate the intended result. This helps the reader quickly gras
 
 [If applicable, how to handle existing data/systems]
 
+## Phase 1: [Descriptive Name]
+
+[Dependencies: **Phase x**, **Phase y** (Only show this section if applicable)]
+
+[Short summary of this phase accomplishes]
+
+**Tasks**:
+- [ ] [Short desciption of first Task. One task is a single actionable action in one `file` or `symbol` (`class`, `function`, etc)]
+   [High level code snippet, if applicable. AVOID verbosity or unncecssary details]
+- [ ] [Next task, same format as above]
+- [ ] [etc.]
+
+**Automated Verification** (Test cases MUST cover ALL acceptance criteria):
+- [ ] [`new testcase` (Unit|Integration|E2E) passes]
+- [ ] [`another new testcase` (Unit|Integration|E2E) passes]
+- [ ] `general check/lint/test commands` passes
+
+**Manual Verification** (OMIT if not feasible, MUST BE user facing behaviour. Focus on acceptance criteria that couldn't be covered by automated tests):
+- [ ] [Description of manual test case]
+  1. [Step 1]
+  2. [Step 2]
+- [ ] [...]
+
+---
+
+## Phase 2: [Descriptive Name]
+
+[Similar structure as above...]
+
+---
+
 ## References
 
 - [Related research or documentation]
@@ -258,6 +252,10 @@ that visually illustrate the intended result. This helps the reader quickly gras
 ````
 
 ### Step 5: Review & Iterate
+
+1. **Start an subagent to review the plan first. Focus on consistency and other common mistakes.**
+
+2. **Fix relevant findings of the review subagents directly**
 
 1. **Present the draft plan location**:
    ```
@@ -294,11 +292,9 @@ that visually illustrate the intended result. This helps the reader quickly gras
    - Work collaboratively
 
 3. **Be Thorough But Not Redundant**:
-   - Read all context files COMPLETELY before planning
    - Use provided research as-is — do not re-investigate what's already documented
+   - Use subagents to find key files quickly
    - Read key source files directly into your context rather than delegating to sub-agents
-   - Only spawn sub-agents for narrow, specific questions that aren't answered by existing research
-   - Include specific file paths and line numbers
    - Write measurable success criteria with clear automated vs manual distinction
 
 4. **Be Visual**:
@@ -311,8 +307,8 @@ that visually illustrate the intended result. This helps the reader quickly gras
 5. **Be Practical**:
    - Focus on incremental, testable changes
    - Consider migration and rollback
+   - Ensure that all relevant documentation updates are fully covered by the plan
    - Think about edge cases
-   - Include "what we're NOT doing"
 
 6. **No Open Questions in Final Plan**:
    - If you encounter open questions during planning, STOP
