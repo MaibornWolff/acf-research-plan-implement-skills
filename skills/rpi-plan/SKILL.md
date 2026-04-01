@@ -181,7 +181,7 @@ status: draft
 
 ## Current State Analysis
 
-[Short overview, of what exists now]
+[What exists now, what's missing, key constraints discovered]
 
 ## Desired End State
 

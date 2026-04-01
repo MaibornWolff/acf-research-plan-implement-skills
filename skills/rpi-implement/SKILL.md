@@ -53,11 +53,23 @@ If you encounter a mismatch:
 After implementing a phase:
 - Run the success criteria checks listed in the plan (test commands, linters, type checkers, etc.)
 - Fix any issues before proceeding
+- If the phase has **manual verification steps**, pause and inform the human:
+  ```
+  Phase [N] Complete - Ready for Manual Verification
+
+  Automated verification passed:
+  - [List automated checks that passed]
+
+  Please perform the manual verification steps listed in the plan:
+  - [List manual verification items from the plan]
+
+  Let me know when manual testing is complete so I can proceed to Phase [N+1].
+  ```
 - Proceed with the next phase (if not explicitly prompted otherwise)
 
 Do not check off items in the manual testing steps until confirmed by the user.
 
-After all phases are fully done, present the manual testing steps to the user for verification.
+After all phases are fully done, present a summary to the user for verification.
 
 ## If You Get Stuck
 

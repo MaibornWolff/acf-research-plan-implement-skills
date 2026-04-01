@@ -46,19 +46,19 @@ Then wait for the user's research query.
    - Each sub-agent should focus on locating files and reporting back paths and brief summaries - NOT on deeply analyzing code
    - The key is to use these agents for discovery:
      - Search for files related to each research area
-     - Identify entry points, key types, and important functions
+     - Identify entry points, key types, important functions and relevant documentation
      - Report back file paths, line numbers, and short descriptions of what each file contains
      - Run multiple agents in parallel when they're searching for different things
      - Remind agents they are documenting, not evaluating or improving
+   - **If you find an existing research regarding the same or a similar topic**
+     - Check the commit hash and timestamp in the document header, you MUST make sure the document is still up-to-date by spawning a subagent with the task to check all changes since the document creation
+     - Read the document and understand it if still up to date
+     - Decide for yourself if you should update the existing document in the following steps or create a new one instead
    - **If the user explicitly asks for web research**
      - Spawn agents with WebSearch/WebFetch tools or skills (depending what is available)
      - Each agent should focus on one research question
      - The agent should fully answer that question and provide sources for every statement
      - IMPORTANT: If the websearch tool or skill, already acts like a subagent and directly provides the answer, DO NOT spawn subagents, instead use the tool directly
-   - **If you find an existing research regarding the same or a similar topic**
-     - Check the commit hash and timestamp in the document header, you MUST make sure the document is still up-to-date by spawning a subagent with the task to check all changes since the document creation
-     - Read the document and understand it if still up to date
-     - Decide for yourself if you should update the existing document in the following steps or create a new one instead
 
 4. **Read the most relevant files yourself in the main context:**
    - After sub-agents report back, identify the most important files for answering the research question
