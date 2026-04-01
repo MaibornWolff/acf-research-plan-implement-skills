@@ -103,7 +103,7 @@ Then wait for the user's research query.
      ## Summary
      [High-level documentation of what was found, answering the user's question by describing what exists]
 
-     [Render a file tree, giving an overview of the key files]
+     [Render a file tree, giving an overview of the key files, grouped by folder]
 
      [Include ASCII diagrams if helps the reader to understand the discovered concepts]
 
