@@ -24,7 +24,7 @@ Then wait for the user's input.
 
 ## Process Steps
 
-### Step 1: Context Gathering & Initial Analysis
+### Step 1: Context Gathering & Brainstorming
 
 1. **Read all mentioned files immediately and FULLY**:
    - Any files the user referenced (docs, research, code)
@@ -38,18 +38,19 @@ Then wait for the user's input.
    - If NO research document was provided, spawn a subagent to find relevant research documents:
      - The subagent first should quickly scan the research folder by filename & yaml frontmatter to find relevant documents
      - Then check if the research is relevant for our plan
-     - IF an document is relevant, verify that the research document is up-to-date by checking all changes since it's creation
+     - IF a document is relevant, verify that the research document is up-to-date by checking all changes since its creation
      - IF the document is outdated, the subagent should make sure to fully understand the latest information and update the document
 
 3. **Spawn sub-agents for missing information**:
    - Do NOT spawn sub-agents to re-discover what the research document already covers
    - Spawn explorer subagents to find additional, relevant files for task
-   - The job of the subagent it to explore and return paths to relevant files line numbers, NOT to provide long answers
+   - The job of the subagent is to explore and return paths to relevant files and line numbers, NOT to provide long answers
    - Each sub-agent should have a narrow, specific question to answer — not broad exploration
    - You MUST fully understand third party interfaces you are going to use:
      - IF you have access to the source code (e.g. node_modules), start a subagent to explore the relevant parts
      - OTHERWISE start a websearch, either as a subagent or directly if your websearch tool already behaves like a subagent
-   - You MUST find and identify all related documentation to that feature and plan how to udpate it
+   - You MUST find and identify all related documentation for that feature and plan how to update it
+   - You MUST wait for the subagents to finish before continuing with the next step or doing additional research in the main agent
 
 4. **Read the most relevant files directly into your main context**:
    - Based on the research, user input and/or subagent results, identify the most relevant source files for the given tasks
@@ -62,7 +63,7 @@ Then wait for the user's input.
    - Note assumptions that need verification
    - Determine true scope based on codebase reality
 
-6. **Present informed understanding and focused questions**:
+6. **Present informed understanding and work back and forth with the user**:
    ```
    Based on the task and my research of the codebase, I understand we need to [accurate summary].
 
@@ -71,7 +72,7 @@ Then wait for the user's input.
    - [Relevant pattern or constraint discovered]
    - [Potential complexity or edge case identified]
 
-   Questions that my research couldn't answer:
+   Questions:
    1. [Specific technical question that requires human judgment]
       _Recommended_: [assumed/recommended answer]
    2. [Business logic clarification]
@@ -81,48 +82,17 @@ Then wait for the user's input.
    ... [Above are just examples. Ask as many questions as needed]
    ```
 
-   Only ask questions that you genuinely cannot answer through code investigation.
+   Iterate with the user. Use focused questions to ensure you have a mutual understanding of the ideal solution.
+   Propose different alternatives and let the user decide which one is best.
+   **Remember**: The user is the expert and responsible for the decisions being made.
 
    Work with ASCII mockups for UI/Design related questions to give the user a visual understanding.
 
-### Step 2: Targeted Research & Discovery
+   Verify all facts or statements made during the discussion, either by looking at the codebase, dependencies, or doing a websearch.
 
-After getting initial clarifications:
+   If the user gives feedback or changes some of your recommended answers, confirm your understanding before proceeding with the next step.
 
-1. **If the user corrects any misunderstanding**:
-   - DO NOT just accept the correction
-   - Read the specific files/directories they mention directly into your context
-   - Only proceed once you've verified the facts yourself
-
-2. If you have a todo list, use it to track exploration progress
-
-3. **Fill in gaps — do NOT redo existing research**:
-   - If a research document was provided, identify only the specific gaps that need filling
-   - Read additional files directly when possible — only spawn sub-agents for searches where you don't know the file paths
-   - **Ask yourself before any research action: "Is this already covered by the provided research?"** If yes, skip it and use what's there.
-
-4. **Present findings and design options**:
-   ```
-   Based on my research, here's what I found:
-
-   **Current State:**
-   - [Key discovery about existing code]
-   - [Pattern or convention to follow]
-
-   **Design Options:**
-   1. [Option A] - [pros/cons]
-   2. [Option B] - [pros/cons]
-
-   **Open Questions:**
-   1. [Technical uncertainty]
-      _Recommended_: [assumed/recommended answer]
-   2. [Design decision needed]
-      _Recommended_: [assumed/recommended answer]
-
-   Which approach aligns best with your vision?
-   ```
-
-### Step 3: Plan Structure Development
+### Step 2: Plan Structure Development
 
 Once aligned on approach:
 
@@ -141,11 +111,11 @@ Once aligned on approach:
    Does this phasing make sense? Should I adjust the order or granularity?
    ```
 
-2. **Get feedback on structure** before writing details
+2. **Get explicit approval of the outline before writing the full plan**. If you get feedback, confirm your understanding first and update the outline as needed.
 
-### Step 4: Detailed Plan Writing
+### Step 3: Detailed Plan Writing
 
-After structure approval:
+After **explicit** approval of the user:
 
 1. **Gather metadata**:
    - Run `python3 <skill_directory>/scripts/metadata.py` to get date, commit, branch, and repository info
@@ -201,8 +171,8 @@ that visually illustrate the intended result. This helps the reader quickly gras
 
 [High level file tree showing the affected files and signatures]
 - `folder`
-  - `file1` - [consise change summary]
-    - `AffectedClass` - [few word summar]
+  - `file1` - [concise change summary]
+    - `AffectedClass` - [few word summary]
     - [...]
   - `file2` - [...]
 
@@ -221,8 +191,8 @@ that visually illustrate the intended result. This helps the reader quickly gras
 [Short summary of this phase accomplishes]
 
 **Tasks**:
-- [ ] [Short desciption of first Task. One task is a single actionable action in one `file` or `symbol` (`class`, `function`, etc)]
-   [High level code snippet, if applicable. AVOID verbosity or unncecssary details]
+- [ ] [Short description of first task. One task is a single actionable action in one `file` or `symbol` (`class`, `function`, etc)]
+   [High level code snippet, if applicable. AVOID verbosity or unnecessary details]
 - [ ] [Next task, same format as above]
 - [ ] [etc.]
 
@@ -251,13 +221,13 @@ that visually illustrate the intended result. This helps the reader quickly gras
 - [Similar implementation: file:line]
 ````
 
-### Step 5: Review & Iterate
+### Step 4: Review & Iterate
 
-1. **Start an subagent to review the plan first. Focus on consistency and other common mistakes.**
+1. **Start a subagent to review the plan first. Focus on consistency and other common mistakes.**
 
-2. **Fix relevant findings of the review subagents directly**
+2. **Fix relevant findings of the review subagent directly**
 
-1. **Present the draft plan location**:
+3. **Present the draft plan location**:
    ```
    I've created the initial implementation plan at:
    `docs/agents/plans/YYYY-MM-DD-description.md`
@@ -269,13 +239,13 @@ that visually illustrate the intended result. This helps the reader quickly gras
    - Missing edge cases or considerations?
    ```
 
-2. **Iterate based on feedback** - be ready to:
+4. **Iterate based on feedback** - be ready to:
    - Add missing phases
    - Adjust technical approach
    - Clarify success criteria (both automated and manual)
    - Add/remove scope items
 
-3. **Continue refining** until the user is satisfied
+5. **Continue refining** until the user is satisfied
 
 ## Important Guidelines
 
