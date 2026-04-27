@@ -39,31 +39,67 @@ The three skills form a sequential pipeline. Each step produces an artifact that
 
 You can run all three steps end-to-end for a large feature, or start at any stage. Research can be skipped for simple codebases or straightforward features where the agent can plan directly without prior investigation.
 
+### Example: Adding rate limiting to an API
+
+Here is how you would use the full pipeline to add rate limiting to an existing API.
+
+**Step 1: Research the codebase**
+
+Start by understanding how the API currently handles requests, what middleware exists, and where authentication is enforced. The research skill produces a report at `docs/agents/research/`.
+
+```
+/rpi-research How does request handling work in this API? I want to understand
+the middleware chain, how routes are registered, and how authentication is enforced.
+I'm planning to add rate limiting later.
+```
+
+This creates a report like `docs/agents/research/2026-04-02-api-request-handling.md` that documents the current middleware pipeline, route registration patterns, and relevant file paths with line numbers.
+
+Key points for good research prompts:
+- Focus on understanding what exists today, not on the future feature
+- Be specific about which areas to investigate (middleware, routes, auth)
+- Mention the broader goal so the agent knows what's relevant to cover
+
+**Step 2: Plan the implementation**
+
+Reference the research report so the planning skill can build on it directly instead of re-investigating the codebase.
+
+```
+/rpi-plan Add rate limiting to the API. Here is the research:
+@docs/agents/research/2026-04-02-api-request-handling.md
+```
+
+The agent reads the research, identifies what else it needs to know, asks clarifying questions (storage backend, rate limits per endpoint, etc.), and produces a phased plan at `docs/agents/plans/2026-04-02-api-rate-limiting.md`. You iterate on the plan until it covers all cases.
+
+**Step 3: Implement the plan**
+
+Point the implementation skill at the approved plan. It reads the plan, checks off tasks as it goes, and pauses for manual verification at the right moments.
+
+```
+/rpi-implement @docs/agents/plans/2026-04-02-api-rate-limiting.md
+```
+
+The agent works through each phase, runs automated tests after every step, and asks you to verify user-facing behavior at milestones.
+
 ## Skills
 
 ### rpi-research
 
 Conduct deep codebase research and produce a written report. Reports are saved to `docs/agents/research/` by default.
 
-```
-/rpi-research How does authentication work in this codebase?
-```
+The research skill documents what exists today: where code lives, how it works, and how components connect. It does not suggest improvements or plan changes.
 
 ### rpi-plan
 
 Create detailed, phased implementation plans through interactive research and iteration. Plans are saved to `docs/agents/plans/` by default.
 
-```
-/rpi-plan Add a caching layer to the API
-```
+When a research document is provided, the plan skill trusts it as the source of truth and builds on top of it. It asks clarifying questions, proposes design options, and produces a plan with checkboxes that can be tracked during implementation.
 
 ### rpi-implement
 
 Execute approved implementation plans phase by phase with automated and manual verification. Looks for recent plans in `docs/agents/plans/` or you can provide a specific path.
 
-```
-/rpi-implement
-```
+The implementation skill uses the plan as both a guide and a progress tracker, marking tasks as in-progress or done as it works through each phase.
 
 ---
 
