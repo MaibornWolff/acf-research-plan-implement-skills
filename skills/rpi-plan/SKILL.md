@@ -111,6 +111,8 @@ Once aligned on approach:
    Does this phasing make sense? Should I adjust the order or granularity?
    ```
 
+   **Phase by vertical feature slices**. Do NOT extract tests or documentation updates into their own phases. Include tests and documentation in the phase that delivers the related behavior.
+
 2. **Get explicit approval of the outline before writing the full plan**. If you get feedback, confirm your understanding first and update the outline as needed.
 
 ### Step 3: Detailed Plan Writing
@@ -131,6 +133,7 @@ After **explicit** approval of the user:
    - Split the plan into phases:
      - Keep phases very coarse. It is okay to only have a single phase for small features.
      - Split phases if they are not or only loosely related or can be implemented in parallel
+     - Phase by vertical feature slices, not activity type. Do NOT create dedicated test-only or documentation-only phases. Put tests and documentation in the phase for the behavior they verify or explain.
    - Use the template structure below:
 
 ````markdown
