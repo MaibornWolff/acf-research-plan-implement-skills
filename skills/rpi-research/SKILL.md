@@ -16,6 +16,7 @@ You are tasked with conducting comprehensive research across the codebase to ans
 - ONLY describe what exists, where it exists, how it works, and how components interact
 - You are creating a technical map/documentation of the existing system
 
+
 ## Initial Setup
 
 If the user already provided a research question or topic alongside this command, proceed directly to step 1 below. Only if no query was given, respond with:
@@ -23,6 +24,9 @@ If the user already provided a research question or topic alongside this command
 I'm ready to research the codebase. Please provide your research question or area of interest, and I'll analyze it thoroughly by exploring relevant components and connections.
 ```
 Then wait for the user's research query.
+
+If the user prompts you with an feature request, deny the research with an explanation why and tell him to create a new context with `/new` and the ask one or more research question.
+Provide him an relevant example, e.g. `/rpi-reseach <question>`.
 
 ## Steps to follow after receiving the research query:
 

@@ -50,7 +50,6 @@ Start by understanding how the API currently handles requests, what middleware e
 ```
 /rpi-research How does request handling work in this API? I want to understand
 the middleware chain, how routes are registered, and how authentication is enforced.
-I'm planning to add rate limiting later.
 ```
 
 This creates a report like `docs/agents/research/2026-04-02-api-request-handling.md` that documents the current middleware pipeline, route registration patterns, and relevant file paths with line numbers.
